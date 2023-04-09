@@ -12,7 +12,7 @@ APPROACH_MARKER = 1
 DOCK = 2
 CHARGE = 3
 UNDOCK = 4
-     
+    
 def ar_message_handler(data):
     global latest_marker
 	
@@ -49,7 +49,7 @@ def main():
     ar_sub = rospy.Subscriber("ar_pose_marker", AlvarMarkers, ar_message_handler)
     empty_service = rospy.Service("dock", Empty, dock_cb)
     empty_service = rospy.Service("undock", Empty, undock_cb)
-   
+
     velocity_pub = rospy.Publisher("cmd_vel", Twist, queue_size=0)
 	
     rospy.sleep(2)
@@ -75,7 +75,7 @@ def main():
 
         rospy.loginfo_throttle(1, "state: %d" % state)
 	
-	if latest_marker != None:
+        if latest_marker != None:
             ori_q = latest_marker.pose.pose.orientation
             ori_list = [ori_q.x, ori_q.y, ori_q.z, ori_q.w]
             (roll, pitch, yaw) = euler_from_quaternion (ori_list)
@@ -115,7 +115,7 @@ def main():
 
             velocity_pub.publish(robot_vel)
 
-         
+        
         elif state == DOCK: 
             # Do blind movements to dock the robot
             move(4, 0, 0, 3.14/4) # turn around in 4 sec
@@ -133,7 +133,7 @@ def main():
             move(1, 0.4, 0, 0) 
             move(0.5, 0, 0, 0) # stop
             state = IDLE
-                  	
+
 if __name__ =='__main__':
     try:  
         main()
